@@ -1342,7 +1342,7 @@ namespace bson {
             return true;
         }
         //catch(boost::bad_lexical_cast &) {
-        catch(std::invalid_argument &){
+        catch(...){
             return false;
         }
 
