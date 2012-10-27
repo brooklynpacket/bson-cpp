@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include <boost/shared_ptr.hpp>
-
+//#include <boost/shared_ptr.hpp>
+#include <memory>
 namespace bson {
 
     // utility class for assembling hierarchical objects
@@ -74,7 +74,7 @@ namespace bson {
 
     private:
         void addBuilder( const string &name ) {
-            boost::shared_ptr< BSONObjBuilder > newBuilder( new BSONObjBuilder( back()->subobjStart( name ) ) );
+            std::shared_ptr< BSONObjBuilder > newBuilder( new BSONObjBuilder( back()->subobjStart( name ) ) );
             _builders.push_back( make_pair( name, newBuilder.get() ) );
             _builderStorage.push_back( newBuilder );
         }
@@ -87,7 +87,7 @@ namespace bson {
         BSONObjBuilder *back() { return _builders.back().second; }
 
         vector< pair< string, BSONObjBuilder * > > _builders;
-        vector< boost::shared_ptr< BSONObjBuilder > > _builderStorage;
+        vector< std::shared_ptr< BSONObjBuilder > > _builderStorage;
 
     };
 

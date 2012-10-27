@@ -17,6 +17,7 @@
 
 #pragma once
 #include "bsonobj.h"
+#include "util/noncopyable.h"
 
 namespace bson {
 
@@ -142,7 +143,7 @@ namespace bson {
     // definitions in bsonobjbuilder.h b/c of incomplete types
 
     // Utility class to implement BSON( key << val ) as described above.
-    class BSONObjBuilderValueStream : public boost::noncopyable {
+    class BSONObjBuilderValueStream : public NonCopyable {
     public:
         friend class Labeler;
         BSONObjBuilderValueStream( BSONObjBuilder * builder );

@@ -14,14 +14,16 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+#include <unistd.h>
 #include "oid.h"
 #include "lib/atomic_int.h"
 #include "lib/nonce.h"
 
-#include <boost/static_assert.hpp>
 
-BOOST_STATIC_ASSERT( sizeof(bson::OID) == 12 );
+//#include <boost/static_assert.hpp>
+
+//BOOST_STATIC_ASSERT( sizeof(bson::OID) == 12 );
+static_assert(sizeof(bson::OID)==12,"BSON OID is not of size 12");
 
 using namespace Nonce;
 
@@ -52,7 +54,8 @@ namespace bson {
     }
 
     OID::MachineAndPid OID::genMachineAndPid() {
-        BOOST_STATIC_ASSERT( sizeof(OID::MachineAndPid) == 5 );
+        //BOOST_STATIC_ASSERT( sizeof(OID::MachineAndPid) == 5 );
+        static_assert(sizeof(OID::MachineAndPid) == 5,"OID Machine and Pid not of size 5");
 
         // this is not called often, so the following is not expensive, and
         // gives us some testing that nonce generation is working right and that

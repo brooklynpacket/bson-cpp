@@ -16,13 +16,15 @@
  */
 
 #include "nonce.h"
-#include <boost/static_assert.hpp>
-#include <boost/thread/mutex.hpp>
-
+//#include <boost/static_assert.hpp>
+//#include <boost/thread/mutex.hpp>
+#include <cassert>
+#include <mutex>
 namespace Nonce {
 
-    BOOST_STATIC_ASSERT( sizeof(nonce) == 8 );
-
+    //BOOST_STATIC_ASSERT( sizeof(nonce) == 8 );
+    static_assert(sizeof(nonce) == 8, "Nonce size not correct");
+    
     Security::Security() {
         static int n;
         std::cout << n;
@@ -45,8 +47,8 @@ namespace Nonce {
     }
 
     nonce Security::getNonce() {
-        static boost::mutex m;
-        boost::mutex::scoped_lock lk(m);
+        static std::mutex m;
+        std::lock_guard<std::mutex> lk(m);
 
         /* question/todo: /dev/random works on OS X.  is it better
            to use that than random() / srandom()?

@@ -17,12 +17,15 @@
 
 #pragma once
 
-#include <boost/intrusive_ptr.hpp>
 #include <set>
 #include <list>
 #include <vector>
 #include <string>
-#include "lib/atomic_int.h"
+#include <memory>
+
+//#include <boost/intrusive_ptr.hpp>
+//#include "lib/atomic_int.h"
+
 #include "util/builder.h"
 #include "stringdata.h"
 #include "bsonelement.h"
@@ -88,8 +91,8 @@ namespace bson {
          *  Use this constructor when you want BSONObj to free(holder) when it is no longer needed
          *  BSONObj::Holder has an extra 4 bytes for a ref-count before the start of the object
         */
-        class Holder;
-        explicit BSONObj(Holder* holder) {
+        typedef std::shared_ptr<char> Holder;
+        explicit BSONObj(Holder holder) {
             init(holder);
         }
 
@@ -448,7 +451,7 @@ namespace bson {
             assert( objsize() );
             b.appendBuf(reinterpret_cast<const void *>( objdata() ), objsize());
         }
-
+/*
 #pragma pack(1)
         class Holder : boost::noncopyable {
         private:
@@ -471,16 +474,18 @@ namespace bson {
             }
         };
 #pragma pack()
-
+*/
+            
     private:
         const char *_objdata;
-        boost::intrusive_ptr< Holder > _holder;
+        //boost::intrusive_ptr< Holder > _holder;
+        Holder _holder;
 
         void _assertInvalid() const;
 
-        void init(Holder *holder) {
+        void init(Holder & holder) {
             _holder = holder; // holder is now managed by intrusive_ptr
-            init(holder->data);
+            init(holder.get());
         }
         void init(const char *data) {
             _objdata = data;

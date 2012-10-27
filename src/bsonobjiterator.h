@@ -17,8 +17,8 @@
 
 #pragma once
 
-#include <boost/preprocessor/cat.hpp> // like the ## operator but works with __LINE__
-
+//#include <boost/preprocessor/cat.hpp> // like the ## operator but works with __LINE__
+#include "bsonobj.h"
 namespace bson {
 
     /** iterator for a BSONObj

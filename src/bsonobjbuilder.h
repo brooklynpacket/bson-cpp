@@ -24,10 +24,12 @@
 
 #include <limits>
 #include <cmath>
-using namespace std;
+#include "util/noncopyable.h"
+
 
 namespace bson {
-
+    
+using namespace std;
 #if defined(_WIN32)
 // warning: 'this' : used in base member initializer list
 #pragma warning( disable : 4355 )
@@ -80,7 +82,7 @@ namespace bson {
     /** Utility for creating a BSONObj.
         See also the BSON() and BSON_ARRAY() macros.
     */
-    class BSONObjBuilder : boost::noncopyable {
+    class BSONObjBuilder : NonCopyable {
     public:
         /** @param initsize this is just a hint as to the final size of the
             object */
@@ -576,7 +578,7 @@ namespace bson {
             bool own = owned();
             massert( 10335 , "builder does not own memory", own );
             doneFast();
-            BSONObj::Holder* h = (BSONObj::Holder*)_b.buf();
+            BSONObj::Holder h(_b.buf());
             decouple(); // sets _b.buf() to NULL
             return BSONObj(h);
         }
@@ -707,7 +709,7 @@ namespace bson {
         static const string numStrs[100]; // cache of 0 to 99 inclusive
     };
 
-    class BSONArrayBuilder : boost::noncopyable {
+    class BSONArrayBuilder : NonCopyable {
     public:
         BSONArrayBuilder() : _i(0), _b() {}
         BSONArrayBuilder( BufBuilder &_b ) : _i(0), _b(_b) {}
