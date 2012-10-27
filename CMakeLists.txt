@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-
+project(bson-cpp)
 
 set(CMAKE_XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++11")
@@ -12,27 +12,41 @@ if (CMAKE_COMPILER_IS_GNUCXX OR CMAKE_COMPILER_IS_GNUCC)
   #set ( CMAKE_CXX_FLAGS_DEBUG "")
   #set ( CMAKE_CXX_FLAGS_RELEASE  "" )
 endif ()
-
-add_library(bsoncpp SHARED
+set(BSON_HEADERS
+	inc/bson-inl.h
+	inc/bson.h
+	inc/bsonassert.h
+	inc/bsonelement.h
+	inc/bsonmisc.h
+	inc/bsonobj.h
+	inc/bsonobjbuilder.h
+	inc/bsonobjiterator.h
+	inc/bsontypes.h
+	inc/inline_decls.h
+	inc/oid.h
+	inc/ordering.h
+	inc/stringdata.h
+	inc/util/builder.h
+	inc/util/embedded_builder.h
+	inc/util/hex.h
+	inc/util/misc.h
+	inc/util/noncopyable.h
+	inc/util/optime.h
+	inc/util/time_support.h
+)
+set(BSON_SOURCE
 	src/bsonobj.cpp
-	src/oid.cpp
-	lib/base64.cpp
-	lib/md5.c
-	lib/nonce.cpp
-	#headers, for things like xcode to see
-	src/bson-inl.h
-	src/bson.h
-	src/bsonassert.h
-	src/bsonelement.h
-	src/bsonmisc.h
-	src/bsonobj.h
-	src/bsonobjbuilder.h
-	src/bsonobjiterator.h
-	src/bsontypes.h
-	src/inline_decls.h
-	src/oid.h
-	src/ordering.h
-	src/stringdata.h
-	src/util/builder.h
-	src/util/embedded_builder.h
+        src/oid.cpp
+        lib/base64.cpp
+        lib/md5.c
+        lib/nonce.cpp
+)
+
+add_library(bsoncpp ${BSON_SOURCE} ${BSON_HEADERS})
+
+
+install(TARGETS bsoncpp
+	LIBRARY DESTINATION lib
+	ARCHIVE DESTINATION lib)
+install(FILES 
 )

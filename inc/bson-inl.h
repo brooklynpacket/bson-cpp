@@ -23,9 +23,9 @@
 #include <map>
 #include <limits>
 #include <chrono>
-#include "util/misc.h"
-#include "util/hex.h"
-#include "util/optime.h"
+#include "misc.h"
+#include "hex.h"
+#include "optime.h"
 
 #if defined(_WIN32)
 #undef max

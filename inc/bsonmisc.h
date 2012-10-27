@@ -17,7 +17,7 @@
 
 #pragma once
 #include "bsonobj.h"
-#include "util/noncopyable.h"
+#include "noncopyable.h"
 
 namespace bson {
 

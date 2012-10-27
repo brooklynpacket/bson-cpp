@@ -20,9 +20,9 @@
 #include <string>
 #include <string.h>
 #include <stdio.h>
-#include "../inline_decls.h"
-#include "../stringdata.h"
-#include "../bsonassert.h"
+#include "inline_decls.h"
+#include "stringdata.h"
+#include "bsonassert.h"
 
 namespace bson {
 

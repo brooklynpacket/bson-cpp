@@ -26,7 +26,7 @@
 //#include <boost/intrusive_ptr.hpp>
 //#include "lib/atomic_int.h"
 
-#include "util/builder.h"
+#include "builder.h"
 #include "stringdata.h"
 #include "bsonelement.h"
 

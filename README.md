@@ -15,6 +15,10 @@ http://bsonspec.org.
 
 Note that this is not yet ready for production. While all the majority of the code has been thoroughly tested in the mongodb distribution, this fork is not yet proved stable.
 
+The test application no longer has build code set up, because of issues with linking different std libs on mac.
+
+The current state is unknown, though it builds on mac and linux.
+
 ## Building
 
 The build system here uses CMake. 

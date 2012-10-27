@@ -24,7 +24,7 @@
 
 #include <limits>
 #include <cmath>
-#include "util/noncopyable.h"
+#include "noncopyable.h"
 
 
 namespace bson {

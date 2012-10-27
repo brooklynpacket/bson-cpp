@@ -20,10 +20,10 @@
 #include <vector>
 #include <string.h>
 #include "oid.h"
-#include "util/builder.h"
+#include "builder.h"
 #include "bsontypes.h"
 #include "bsonassert.h"
-#include "util/optime.h"
+#include "optime.h"
 
 namespace bson {
 
