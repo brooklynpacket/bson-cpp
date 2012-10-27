@@ -32,7 +32,6 @@ set(BSON_HEADERS
 	inc/misc.h
 	inc/noncopyable.h
 	inc/optime.h
-	inc/time_support.h
 )
 set(BSON_SOURCE
 	src/bsonobj.cpp
