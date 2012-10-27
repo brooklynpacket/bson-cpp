@@ -1,6 +1,5 @@
 cmake_minimum_required(VERSION 2.8)
-SET(CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-include(${CMAKE_MODULE_PATH}/cxx11/CheckCXX11Features.cmake)
+
 
 set(CMAKE_XCODE_ATTRIBUTE_GCC_VERSION "com.apple.compilers.llvm.clang.1_0")
 set(CMAKE_XCODE_ATTRIBUTE_CLANG_CXX_LANGUAGE_STANDARD "c++11")
@@ -11,7 +10,7 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 #include_directories( ${Boost_INCLUDE_DIRS} )
 
-add_library(bsoncpp
+add_library(bsoncpp SHARED
 	src/bsonobj.cpp
 	src/oid.cpp
 	lib/base64.cpp

@@ -425,9 +425,34 @@ namespace bson {
                 totalSize = 1;
             }
         }
+#ifndef log
+#define log(...) std::cerr
+#define made_custom_log
+#endif
+        //string _asCode() const;
+        inline string _asCode() const {
+            switch( type() ) {
+            case bson::String:
+            case Code:
+                return string(valuestr(), valuestrsize()-1);
+            case CodeWScope:
+                return string(codeWScopeCode(), *(int*)(valuestr())-1);
+            default:
+                log() << "can't convert type: " << (int)(type()) << " to code" << endl;
+            }
+            uassert( 10062 ,  "not code" , 0 );
+            return "";
+        }
+#ifdef made_custom_log
+#undef made_custom_log
+#undef log
+#endif
 
-        string _asCode() const;
-        OpTime _opTime() const;
+        inline OpTime _opTime() const {
+          if(type() == bson::Date || type() == Timestamp)
+            return OpTime(*reinterpret_cast< const unsigned long long* >(value()));
+          return OpTime();
+        }
 
     private:
         const char *data;
