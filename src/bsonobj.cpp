@@ -16,7 +16,7 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
-
+#include "bson.h"
 #include "oid.h"
 #include "bsonobj.h"
 #include "lib/atomic_int.h"
@@ -24,7 +24,8 @@
 #include "lib/md5.hpp"
 #include <limits>
 
-#include "util/json.h"
+//#include "util/json.h"
+
 #include "util/optime.h"
 #include <boost/static_assert.hpp>
 #include <boost/lexical_cast.hpp>
@@ -771,7 +772,8 @@ namespace bson {
         return -1;
     }
 
-    BSONObj staticNull = fromjson( "{'':null}" );
+    //BSONObj staticNull = fromjson( "{'':null}" );
+    BSONObj staticNull = BSONObjBuilder().appendNull("").obj();
 
     /* well ordered compare */
     int BSONObj::woSortOrder(const BSONObj& other, const BSONObj& sortKey ,

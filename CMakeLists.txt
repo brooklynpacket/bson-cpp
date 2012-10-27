@@ -14,7 +14,6 @@ include_directories( ${Boost_INCLUDE_DIRS} )
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
 add_library(bson 
-	src/util/json.cpp
 	src/bsonobj.cpp
 	src/oid.cpp
 	lib/base64.cpp
@@ -25,5 +24,9 @@ add_library(bson
 target_link_libraries(bson ${Boost_LIBRARIES} )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
-add_executable(bson_test test/framework.cpp test/test_bsonobj.cpp)
+add_executable(bson_test 
+	test/framework.cpp 
+	test/test_bsonobj.cpp
+	src/util/json.cpp
+)
 target_link_libraries(bson_test bson)
