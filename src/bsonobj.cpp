@@ -26,12 +26,12 @@
 
 //#include "util/json.h"
 
-#include "util/optime.h"
+#include "optime.h"
 //#include <boost/static_assert.hpp>
 //#include <boost/lexical_cast.hpp>
 
 #include "ordering.h"
-#include "util/embedded_builder.h"
+#include "embedded_builder.h"
 
 
 // make sure our assumptions are valid
