@@ -43,7 +43,11 @@ Check out the headers, particularly bson.h. The project is not fully well setup
 though, so you may have to include other headers for now.
 
 ## License
+All files in the src directory, for the library, are Apache 2.0 licensed.
 
-I am not quite sure what BSON's license is. I'll check with 10gen. mongodb
-carries both an Apache and a GNU-AGPL license (included in this dist).
+All files but md5.c/h in the lib directory are Apache 2.0 licensed. 
+lib/md5.* are zlib licensed.
+
+The files in test are GNU AFFERO GENERAL PUBLIC LICENSE VERSION 3
+
 
