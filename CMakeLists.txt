@@ -26,13 +26,13 @@ set(BSON_HEADERS
 	inc/oid.h
 	inc/ordering.h
 	inc/stringdata.h
-	inc/util/builder.h
-	inc/util/embedded_builder.h
-	inc/util/hex.h
-	inc/util/misc.h
-	inc/util/noncopyable.h
-	inc/util/optime.h
-	inc/util/time_support.h
+	inc/builder.h
+	inc/embedded_builder.h
+	inc/hex.h
+	inc/misc.h
+	inc/noncopyable.h
+	inc/optime.h
+	inc/time_support.h
 )
 set(BSON_SOURCE
 	src/bsonobj.cpp
