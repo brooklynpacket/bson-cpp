@@ -20,6 +20,7 @@
 //#include <boost/thread/mutex.hpp>
 #include <cassert>
 #include <mutex>
+#include <ifstream>
 namespace Nonce {
 
     //BOOST_STATIC_ASSERT( sizeof(nonce) == 8 );
