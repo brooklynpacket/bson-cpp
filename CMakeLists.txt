@@ -27,6 +27,6 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
 add_executable(bson_test 
 	test/framework.cpp 
 	test/test_bsonobj.cpp
-	src/util/json.cpp
+	test/json.cpp
 )
 target_link_libraries(bson_test bson)
