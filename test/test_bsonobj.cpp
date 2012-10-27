@@ -20,8 +20,8 @@
 #include "framework.h"
 #include "bson.h"
 #include "json.h"
-#include "util/time_support.h"
-#include "src/bson-inl.h"
+#include "time_support.h"
+#include "bson-inl.h"
 #include "lib/nonce.h"
 #include <ostream>
 
