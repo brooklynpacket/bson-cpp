@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 2.6)
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR})
 
-add_library(bson 
+add_library(bsoncpp
 	src/bsonobj.cpp
 	src/oid.cpp
 	lib/base64.cpp
@@ -30,4 +30,4 @@ add_executable(bson_test
 	test/test_bsonobj.cpp
 	test/json.cpp
 )
-target_link_libraries(bson_test bson ${Boost_LIBRARIES})
+target_link_libraries(bson_test bsoncpp ${Boost_LIBRARIES})

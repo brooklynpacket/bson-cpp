@@ -17,15 +17,13 @@ Note that this is not yet ready for production. While all the majority of the co
 
 ## Building
 
-The build system here uses autotools. It is a bit unconventional: it hides all
-the autotools magic inside of build/, so all you have to do is:
+The build system here uses CMake. 
 
+    mkdir build
+    cd build
+    cmake ..
     make
 
-=)
-
-The top level Makefile will call configure and the generated Makefile (inside
-build/). The product is build/libbsoncpp.la. You can then link against it.
 
 ## Installing
 
