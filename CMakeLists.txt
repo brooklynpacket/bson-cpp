@@ -9,6 +9,22 @@ add_library(bsoncpp
 	lib/base64.cpp
 	lib/md5.c
 	lib/nonce.cpp
+	#headers, for things like xcode to see
+	src/bson-inl.h
+	src/bson.h
+	src/bsonassert.h
+	src/bsonelement.h
+	src/bsonmisc.h
+	src/bsonobj.h
+	src/bsonobjbuilder.h
+	src/bsonobjiterator.h
+	src/bsontypes.h
+	src/inline_decls.h
+	src/oid.h
+	src/ordering.h
+	src/stringdata.h
+	src/util/builder.h
+	src/util/embedded_builder.h
 )
 
 

@@ -16,6 +16,7 @@
  */
 
 #pragma once
+#include "bsonobj.h"
 
 namespace bson {
 

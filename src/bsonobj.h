@@ -21,12 +21,15 @@
 #include <set>
 #include <list>
 #include <vector>
+#include <string>
 #include "lib/atomic_int.h"
 #include "util/builder.h"
 #include "stringdata.h"
 #include "bsonelement.h"
 
 namespace bson {
+    using std::string;
+    using std::stringstream;
 
     typedef set< BSONElement, BSONElementCmpWithoutField > BSONElementSet;
     typedef multiset< BSONElement, BSONElementCmpWithoutField > BSONElementMSet;

@@ -30,7 +30,7 @@
 
 #pragma once
 
-#include "bsonassert.h"
+//#include "bsonassert.h"
 
 #include "bsontypes.h"
 #include "oid.h"
