@@ -578,7 +578,7 @@ using namespace std;
             bool own = owned();
             massert( 10335 , "builder does not own memory", own );
             doneFast();
-            BSONObj::Holder h(_b.buf());
+            BSONObj::Holder h(_b.buf(), free);
             decouple(); // sets _b.buf() to NULL
             return BSONObj(h);
         }
