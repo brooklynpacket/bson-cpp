@@ -485,7 +485,7 @@ namespace bson {
 
         void init(Holder & holder) {
             _holder = holder; // holder is now managed by intrusive_ptr
-            init(holder.get());
+            init(holder.get()+sizeof(unsigned));
         }
         void init(const char *data) {
             _objdata = data;
