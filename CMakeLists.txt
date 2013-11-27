@@ -53,10 +53,12 @@ set(BSON_SOURCE
         lib/nonce.cpp
 )
 
-add_library(bsoncpp ${BSON_SOURCE} ${BSON_HEADERS})
+add_library(bsoncpp-static STATIC ${BSON_SOURCE} ${BSON_HEADERS})
+SET_TARGET_PROPERTIES(bsoncpp-static PROPERTIES OUTPUT_NAME bsoncpp)
+add_library(bsoncpp SHARED ${BSON_SOURCE} ${BSON_HEADERS})
 
 
-install(TARGETS bsoncpp
+install(TARGETS bsoncpp bsoncpp-static
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib)
 install(DIRECTORY inc/ DESTINATION include/bson
