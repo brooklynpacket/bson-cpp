@@ -101,19 +101,19 @@ namespace bson {
             time_t_to_String(secs, buf);
             stringstream ss;
             ss << time_t_to_String_short(secs) << ' ';
-            ss << hex << secs << ':' << i;
+            ss << std::hex << secs << ':' << i;
             return ss.str();
         }
 
         string toStringPretty() const {
             stringstream ss;
-            ss << time_t_to_String_short(secs) << ':' << hex << i;
+            ss << time_t_to_String_short(secs) << ':' << std::hex << i;
             return ss.str();
         }
 
         string toString() const {
             stringstream ss;
-            ss << hex << secs << ':' << i;
+            ss << std::hex << secs << ':' << i;
             return ss.str();
         }
 

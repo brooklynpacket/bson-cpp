@@ -32,7 +32,6 @@
 
 #include <cstdlib>
 #include <memory>
-#include <iostream>
 #include <sstream>
 //#include <boost/utility.hpp>
 
@@ -84,7 +83,7 @@ namespace bson {
     inline void msgasserted(int msgid, const std::string &msg) { msgasserted(msgid, msg.c_str()); }
     inline void massert(unsigned msgid, std::string msg, bool expr) {
         if(!expr) {
-            std::cout << "assertion failure in bson library: " << msgid << ' ' << msg << std::endl;
+            // std::cout << "assertion failure in bson library: " << msgid << ' ' << msg << std::endl;
             throw bson::assertion( msgid , msg );
         }
     }

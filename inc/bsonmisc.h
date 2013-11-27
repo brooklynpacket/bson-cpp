@@ -40,7 +40,7 @@ namespace bson {
         BSONObj _order;
     };
 
-    typedef set<BSONObj,BSONObjCmp> BSONObjSet;
+    typedef std::set<BSONObj,BSONObjCmp> BSONObjSet;
 
     enum FieldCompareResult {
         LEFT_SUBFIELD = -2,
@@ -169,7 +169,7 @@ namespace bson {
 
         bool haveSubobj() const { return _subobj.get() != 0; }
         BSONObjBuilder *subobj();
-        auto_ptr< BSONObjBuilder > _subobj;
+        std::unique_ptr< BSONObjBuilder > _subobj;
     };
 
     /**

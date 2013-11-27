@@ -25,7 +25,7 @@ namespace bson {
     class EmbeddedBuilder {
     public:
         EmbeddedBuilder( BSONObjBuilder *b ) {
-            _builders.push_back( make_pair( "", b ) );
+            _builders.push_back( std::make_pair( "", b ) );
         }
         // It is assumed that the calls to prepareContext will be made with the 'name'
         // parameter in lex ascending order.
@@ -75,7 +75,7 @@ namespace bson {
     private:
         void addBuilder( const string &name ) {
             std::shared_ptr< BSONObjBuilder > newBuilder( new BSONObjBuilder( back()->subobjStart( name ) ) );
-            _builders.push_back( make_pair( name, newBuilder.get() ) );
+            _builders.push_back( std::make_pair( name, newBuilder.get() ) );
             _builderStorage.push_back( newBuilder );
         }
         void popBuilder() {
@@ -86,8 +86,8 @@ namespace bson {
 
         BSONObjBuilder *back() { return _builders.back().second; }
 
-        vector< pair< string, BSONObjBuilder * > > _builders;
-        vector< std::shared_ptr< BSONObjBuilder > > _builderStorage;
+        std::vector< std::pair< string, BSONObjBuilder * > > _builders;
+        std::vector< std::shared_ptr< BSONObjBuilder > > _builderStorage;
 
     };
 

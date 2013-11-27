@@ -34,8 +34,8 @@ namespace bson {
     using std::string;
     using std::stringstream;
 
-    typedef set< BSONElement, BSONElementCmpWithoutField > BSONElementSet;
-    typedef multiset< BSONElement, BSONElementCmpWithoutField > BSONElementMSet;
+    typedef std::set< BSONElement, BSONElementCmpWithoutField > BSONElementSet;
+    typedef std::multiset< BSONElement, BSONElementCmpWithoutField > BSONElementMSet;
 
     /**
        C++ representation of a "BSON" object -- that is, an extended JSON-style
@@ -162,7 +162,7 @@ namespace bson {
           const;
 
         /** note: addFields always adds _id even if not specified */
-        int addFields(BSONObj& from, set<string>& fields); /* returns n added */
+        int addFields(BSONObj& from, std::set<string>& fields); /* returns n added */
 
         /** returns # of top level fields in the object
            note: iterates to count the fields
@@ -171,7 +171,7 @@ namespace bson {
 
         /** adds the field names to the fields set.  does NOT clear it
             (appends). */
-        int getFieldNames(set<string>& fields) const;
+        int getFieldNames(std::set<string>& fields) const;
 
         /** @return the specified element.  element.eoo() will be true if not found.
             @param name field to find. supports dot (".") notation to reach into embedded objects.
@@ -407,9 +407,9 @@ namespace bson {
         };
 
         /** add all elements of the object to the specified vector */
-        void elems(vector<BSONElement> &) const;
+        void elems(std::vector<BSONElement> &) const;
         /** add all elements of the object to the specified list */
-        void elems(list<BSONElement> &) const;
+        void elems(std::list<BSONElement> &) const;
 
         /** add all values of the object to the specified vector.  If type
             mismatches, exception. this is most useful when the BSONObj is an
@@ -417,24 +417,24 @@ namespace bson {
 
             example:
               bo sub = y["subobj"].Obj();
-              vector<int> myints;
+              std::vector<int> myints;
               sub.Vals(myints);
         */
         template <class T>
-        void Vals(vector<T> &) const;
+        void Vals(std::vector<T> &) const;
         /** add all values of the object to the specified list.  If type
             mismatches, exception. */
         template <class T>
-        void Vals(list<T> &) const;
+        void Vals(std::list<T> &) const;
 
         /** add all values of the object to the specified vector.  If type
             mismatches, skip. */
         template <class T>
-        void vals(vector<T> &) const;
+        void vals(std::vector<T> &) const;
         /** add all values of the object to the specified list.  If type
             mismatches, skip. */
         template <class T>
-        void vals(list<T> &) const;
+        void vals(std::list<T> &) const;
 
         friend class BSONObjIterator;
         typedef BSONObjIterator iterator;
@@ -495,8 +495,8 @@ namespace bson {
 
     };
 
-    ostream& operator<<( ostream &s, const BSONObj &o );
-    ostream& operator<<( ostream &s, const BSONElement &e );
+    std::ostream& operator<<( std::ostream &s, const BSONObj &o );
+    std::ostream& operator<<( std::ostream &s, const BSONElement &e );
 
     StringBuilder& operator<<( StringBuilder &s, const BSONObj &o );
     StringBuilder& operator<<( StringBuilder &s, const BSONElement &e );

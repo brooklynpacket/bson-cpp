@@ -69,7 +69,7 @@ namespace bson {
         long long Long()            const { return chk(NumberLong)._numberLong(); }
         int Int()                   const { return chk(NumberInt)._numberInt(); }
         bool Bool()                 const { return chk(bson::Bool).boolean(); }
-        vector<BSONElement> Array() const; // see implementation for detailed comments
+        std::vector<BSONElement> Array() const; // see implementation for detailed comments
         bson::OID OID()            const { return chk(jstOID).__oid(); }
         void Null()                 const { chk(isNull()); } // throw UserException if not null
         void OK()                   const { chk(ok()); }     // throw UserException if element DNE
@@ -425,10 +425,7 @@ namespace bson {
                 totalSize = 1;
             }
         }
-#ifndef log
-#define log(...) std::cerr
-#define made_custom_log
-#endif
+
         //string _asCode() const;
         inline string _asCode() const {
             switch( type() ) {
@@ -438,15 +435,11 @@ namespace bson {
             case CodeWScope:
                 return string(codeWScopeCode(), *(int*)(valuestr())-1);
             default:
-                log() << "can't convert type: " << (int)(type()) << " to code" << endl;
+                break;
             }
             uassert( 10062 ,  "not code" , 0 );
             return "";
         }
-#ifdef made_custom_log
-#undef made_custom_log
-#undef log
-#endif
 
         inline OpTime _opTime() const {
           if(type() == bson::Date || type() == Timestamp)

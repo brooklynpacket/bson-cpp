@@ -42,12 +42,6 @@ static_assert( sizeof(double) == 8 ,"sizeof value not what was expected");
 static_assert( sizeof(bson::Date_t) == 8 ,"sizeof value not what was expected");
 static_assert( sizeof(bson::OID) == 12 ,"sizeof value not what was expected");
 
-//TODO(jbenet) fix these.
-#define out() std::cout
-#ifndef log
-#define log(...) std::cerr
-#endif
-
 namespace bson {
 
     BSONElement nullElement;
@@ -79,12 +73,10 @@ namespace bson {
 
     // for convenience, '{' is greater than anything and stops number parsing
     inline int lexNumCmp( const char *s1, const char *s2 ) {
-        //cout << "START : " << s1 << "\t" << s2 << endl;
         while( *s1 && *s2 ) {
 
             bool p1 = ( *s1 == (char)255 );
             bool p2 = ( *s2 == (char)255 );
-            //cout << "\t\t " << p1 << "\t" << p2 << endl;
             if ( p1 && !p2 )
                 return 1;
             if ( p2 && !p1 )
@@ -211,8 +203,8 @@ namespace bson {
             break;
         case NumberInt:
         case NumberDouble:
-            if ( number() >= -numeric_limits< double >::max() &&
-                    number() <= numeric_limits< double >::max() ) {
+            if ( number() >= -std::numeric_limits< double >::max() &&
+                    number() <= std::numeric_limits< double >::max() ) {
                 s.precision( 16 );
                 s << number();
             }
@@ -293,10 +285,10 @@ namespace bson {
             s << "{ \"$binary\" : \"";
             char *start = ( char * )( value() ) + sizeof( int ) + 1;
             base64::encode( s , start , len );
-            s << "\", \"$type\" : \"" << hex;
+            s << "\", \"$type\" : \"" << std::hex;
             s.width( 2 );
             s.fill( '0' );
-            s << type << dec;
+            s << type << std::dec;
             s << "\" }";
             break;
         }
@@ -496,10 +488,10 @@ namespace bson {
         case NumberDouble: {
             double left = l.number();
             double right = r.number();
-            bool lNan = !( left <= numeric_limits< double >::max() &&
-                           left >= -numeric_limits< double >::max() );
-            bool rNan = !( right <= numeric_limits< double >::max() &&
-                           right >= -numeric_limits< double >::max() );
+            bool lNan = !( left <= std::numeric_limits< double >::max() &&
+                           left >= -std::numeric_limits< double >::max() );
+            bool rNan = !( right <= std::numeric_limits< double >::max() &&
+                           right >= -std::numeric_limits< double >::max() );
             if ( lNan ) {
                 if ( rNan ) {
                     return 0;
@@ -557,8 +549,6 @@ namespace bson {
             return 0;
         }
         default:
-            out() << "compareElementValues: bad type " << (int) l.type()
-                  << endl;
             assert(false);
         }
         return -1;
@@ -628,8 +618,6 @@ namespace bson {
             rstart = rend + 1;
         }
 
-        log() << "compareDottedFieldNames ERROR  l: " << l << " r: " << r
-              << "  TOO MANY LOOPS" << endl;
         assert(0);
         return SAME; // will never get here
     }
@@ -980,7 +968,7 @@ namespace bson {
     */
 
     /* grab names of all the fields in this object */
-    int BSONObj::getFieldNames(set<string>& fields) const {
+    int BSONObj::getFieldNames(std::set<string>& fields) const {
         int n = 0;
         BSONObjIterator i(*this);
         while ( i.moreWithEOO() ) {
@@ -996,7 +984,7 @@ namespace bson {
     /* note: addFields always adds _id even if not specified
        returns n added not counting _id unless requested.
     */
-    int BSONObj::addFields(BSONObj& from, set<string>& fields) {
+    int BSONObj::addFields(BSONObj& from, std::set<string>& fields) {
         assert( isEmpty() && !isOwned() ); /* partial implementation for now. */
 
         BSONObjBuilder b;
@@ -1112,17 +1100,7 @@ namespace bson {
         return true;
     }
 
-    void BSONObj::dump() const {
-        out() << hex;
-        const char *p = objdata();
-        for ( int i = 0; i < objsize(); i++ ) {
-            out() << i << '\t' << ( 0xff & ( (unsigned) *p ) );
-            if ( *p >= 'A' && *p <= 'z' )
-                out() << '\t' << *p;
-            out() << endl;
-            p++;
-        }
-    }
+    void BSONObj::dump() const {}
 
     string BSONObj::hexDump() const {
         stringstream ss;
@@ -1131,7 +1109,7 @@ namespace bson {
         for( int i = 0; i < size; ++i ) {
             ss.width( 2 );
             ss.fill( '0' );
-            ss << hex << (unsigned)(unsigned char)( d[ i ] ) << dec;
+            ss << std::hex << (unsigned)(unsigned char)( d[ i ] ) << std::dec;
             if ( ( d[ i ] >= '0' && d[ i ] <= '9' ) ||
                  ( d[ i ] >= 'A' && d[ i ] <= 'z' ) )
                 ss << '\'' << d[ i ] << '\'';
@@ -1214,7 +1192,7 @@ namespace bson {
         case NumberInt:
         case NumberDouble:
         case NumberLong:
-            append( fieldName , - numeric_limits<double>::max() ); return;
+            append( fieldName , - std::numeric_limits<double>::max() ); return;
         case jstOID: {
             OID o;
             memset(&o, 0, sizeof(o));
@@ -1246,7 +1224,6 @@ namespace bson {
         case Timestamp: appendTimestamp( fieldName , 0); return;
 
         };
-        log() << "type not support for appendMinElementForType: " << t << endl;
         uassert(10061, "type not supported for appendMinElementForType", false);
     }
 
@@ -1257,7 +1234,7 @@ namespace bson {
         case NumberInt:
         case NumberDouble:
         case NumberLong:
-            append( fieldName , numeric_limits<double>::max() );
+            append( fieldName , std::numeric_limits<double>::max() );
             break;
         case BinData:
             appendMinForType( fieldName , jstOID );
@@ -1279,7 +1256,7 @@ namespace bson {
         case CodeWScope:
             appendCodeWScope( fieldName , "ZZZ" , BSONObj() ); break;
         case Timestamp:
-          appendTimestamp(fieldName, numeric_limits<unsigned long long>::max());
+          appendTimestamp(fieldName, std::numeric_limits<unsigned long long>::max());
             break;
         default:
             appendMinForType( fieldName , t + 1 );
@@ -1386,9 +1363,9 @@ namespace bson {
         we match array # positions with their vector position, and ignore
         any fields with non-numeric field names.
         */
-    vector<BSONElement> BSONElement::Array() const {
+    std::vector<BSONElement> BSONElement::Array() const {
         chk(bson::Array);
-        vector<BSONElement> v;
+        std::vector<BSONElement> v;
         BSONObjIterator i(Obj());
         while( i.more() ) {
             BSONElement e = i.next();

@@ -188,7 +188,7 @@ namespace bson {
     /* add all the fields from the object specified to this object if they don't
        exist */
     inline BSONObjBuilder& BSONObjBuilder::appendElementsUnique(BSONObj x) {
-        set<string> have;
+        std::set<string> have;
         {
             BSONObjIterator i = iterator();
             while ( i.more() )
@@ -345,7 +345,7 @@ namespace bson {
      * also, dotted2nested ignores order
      */
 
-    typedef map<string, BSONElement> BSONMap;
+    typedef std::map<string, BSONElement> BSONMap;
     inline BSONMap bson2map(const BSONObj& obj) {
         BSONMap m;
         BSONObjIterator it(obj);
@@ -362,7 +362,7 @@ namespace bson {
         }
     };
 
-    typedef set<BSONElement, BSONElementFieldNameCmp> BSONSortedElements;
+    typedef std::set<BSONElement, BSONElementFieldNameCmp> BSONSortedElements;
     inline BSONSortedElements bson2set( const BSONObj& obj ) {
         BSONSortedElements s;
         BSONObjIterator it(obj);
@@ -769,20 +769,20 @@ namespace bson {
         return o[field];
     }
 
-    inline void BSONObj::elems(vector<BSONElement> &v) const {
+    inline void BSONObj::elems(std::vector<BSONElement> &v) const {
         BSONObjIterator i(*this);
         while( i.more() )
             v.push_back(i.next());
     }
 
-    inline void BSONObj::elems(list<BSONElement> &v) const {
+    inline void BSONObj::elems(std::list<BSONElement> &v) const {
         BSONObjIterator i(*this);
         while( i.more() )
             v.push_back(i.next());
     }
 
     template <class T>
-    void BSONObj::Vals(vector<T>& v) const {
+    void BSONObj::Vals(std::vector<T>& v) const {
         BSONObjIterator i(*this);
         while( i.more() ) {
             T t;
@@ -791,7 +791,7 @@ namespace bson {
         }
     }
     template <class T>
-    void BSONObj::Vals(list<T>& v) const {
+    void BSONObj::Vals(std::list<T>& v) const {
         BSONObjIterator i(*this);
         while( i.more() ) {
             T t;
@@ -801,7 +801,7 @@ namespace bson {
     }
 
     template <class T>
-    void BSONObj::vals(vector<T>& v) const {
+    void BSONObj::vals(std::vector<T>& v) const {
         BSONObjIterator i(*this);
         while( i.more() ) {
             try {
@@ -813,7 +813,7 @@ namespace bson {
         }
     }
     template <class T>
-    void BSONObj::vals(list<T>& v) const {
+    void BSONObj::vals(std::list<T>& v) const {
         BSONObjIterator i(*this);
         while( i.more() ) {
             try {
@@ -825,11 +825,11 @@ namespace bson {
         }
     }
 
-    inline ostream& operator<<( ostream &s, const BSONObj &o ) {
+    inline std::ostream& operator<<( std::ostream &s, const BSONObj &o ) {
         return s << o.toString();
     }
 
-    inline ostream& operator<<( ostream &s, const BSONElement &e ) {
+    inline std::ostream& operator<<( std::ostream &s, const BSONElement &e ) {
         return s << e.toString();
     }
 

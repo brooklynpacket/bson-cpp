@@ -114,7 +114,7 @@ namespace bson {
     };
 #pragma pack()
 
-    ostream& operator<<( ostream &s, const OID &o );
+    std::ostream& operator<<( std::ostream &s, const OID &o );
     inline StringBuilder& operator<< (StringBuilder& s, const OID& o)
       { return (s << o.str()); }
 
@@ -133,7 +133,7 @@ namespace bson {
         JS
     };
 
-    inline ostream& operator<<( ostream &s, const OID &o ) {
+    inline std::ostream& operator<<( std::ostream &s, const OID &o ) {
         s << o.str();
         return s;
     }

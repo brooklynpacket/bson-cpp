@@ -20,8 +20,6 @@
 #include "misc.h"
 
 namespace bson {
-    using namespace std;
-
     class BSONArrayBuilder;
     class BSONElement;
     class BSONObj;

@@ -29,7 +29,6 @@
 
 namespace bson {
     
-using namespace std;
 #if defined(_WIN32)
 // warning: 'this' : used in base member initializer list
 #pragma warning( disable : 4355 )
@@ -247,7 +246,7 @@ using namespace std;
             long long x = n;
             if ( x < 0 )
                 x = x * -1;
-            if ( x < ( (numeric_limits<int>::max)() / 2 ) ) // extra () to avoid max macro on windows
+            if ( x < ( (std::numeric_limits<int>::max)() / 2 ) ) // extra () to avoid max macro on windows
                 append( fieldName , (int)n );
             else
                 append( fieldName , n );
@@ -559,15 +558,15 @@ using namespace std;
         /** Append an array of values. */
         template < class T >
         BSONObjBuilder& append( const StringData& fieldName,
-          const vector< T >& vals );
+          const std::vector< T >& vals );
 
         template < class T >
         BSONObjBuilder& append( const StringData& fieldName,
-          const list< T >& vals );
+          const std::list< T >& vals );
 
         /** Append a set of values. */
         template < class T >
-        BSONObjBuilder& append( const StringData& fieldName, const set< T >& vals );
+        BSONObjBuilder& append( const StringData& fieldName, const std::set< T >& vals );
 
         /**
          * destructive
@@ -823,7 +822,7 @@ using namespace std;
 
     template < class T >
     inline BSONObjBuilder& BSONObjBuilder::append( const StringData& fieldName,
-      const vector< T >& vals ) {
+      const std::vector< T >& vals ) {
         BSONObjBuilder arrBuilder;
         for ( unsigned int i = 0; i < vals.size(); ++i )
             arrBuilder.append( numStr( i ), vals[ i ] );
@@ -842,13 +841,13 @@ using namespace std;
     }
 
     template < class T >
-    inline BSONObjBuilder& BSONObjBuilder::append( const StringData& fieldName, const list< T >& vals ) {
-        return _appendIt< list< T > >( *this, fieldName, vals );
+    inline BSONObjBuilder& BSONObjBuilder::append( const StringData& fieldName, const std::list< T >& vals ) {
+        return _appendIt< std::list< T > >( *this, fieldName, vals );
     }
 
     template < class T >
-    inline BSONObjBuilder& BSONObjBuilder::append( const StringData& fieldName, const set< T >& vals ) {
-        return _appendIt< set< T > >( *this, fieldName, vals );
+    inline BSONObjBuilder& BSONObjBuilder::append( const StringData& fieldName, const std::set< T >& vals ) {
+        return _appendIt< std::set< T > >( *this, fieldName, vals );
     }
 
 

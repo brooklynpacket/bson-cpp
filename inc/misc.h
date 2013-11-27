@@ -24,7 +24,6 @@
 
 namespace bson {
 
-    using namespace std;
     using std::string;
 
     inline void time_t_to_String(time_t t, char *buf) {
