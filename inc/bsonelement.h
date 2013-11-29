@@ -62,7 +62,7 @@ namespace bson {
             string foo = obj["foo"].String();
             // exception if not a string type or DNE
         */
-        string String()             const { return chk(bson::String).valuestr(); }
+        std::string String()             const { return chk(bson::String).valuestr(); }
         Date_t Date()               const { return chk(bson::Date).date(); }
         double Number()             const { return chk(isNumber()).number(); }
         double Double()             const { return chk(NumberDouble)._numberDouble(); }
@@ -92,19 +92,19 @@ namespace bson {
         void Val(bson::OID& v)     const { v = OID(); }
         void Val(int& v)            const { v = Int(); }
         void Val(double& v)         const { v = Double(); }
-        void Val(string& v)         const { v = String(); }
+        void Val(std::string& v)         const { v = String(); }
 
         /** Use ok() to check if a value is assigned:
             if( myObj["foo"].ok() ) ...
         */
         bool ok() const { return !eoo(); }
 
-        string toString( bool includeFieldName = true, bool full=false) const;
+        std::string toString( bool includeFieldName = true, bool full=false) const;
         void toString(StringBuilder& s, bool includeFieldName = true,
           bool full=false) const;
-        string jsonString( JsonStringFormat format,
+        std::string jsonString( JsonStringFormat format,
           bool includeFieldNames = true, int pretty = 0 ) const;
-        operator string() const { return toString(); }
+        operator std::string() const { return toString(); }
 
         /** Returns the type of the element */
         BSONType type() const { return (BSONType) *data; }
@@ -112,7 +112,7 @@ namespace bson {
         /** retrieve a field within this element
             throws exception if *this is not an embedded object
         */
-        BSONElement operator[] (const string& field) const;
+        BSONElement operator[] (const std::string& field) const;
 
         /** returns the type of the element fixed for the main type
             the main purpose is numbers.  any numeric type will return
@@ -255,9 +255,9 @@ namespace bson {
             return type() == bson::String ? valuestr() : "";
         }
         /** Get the string value of the element.  If not a string returns "". */
-        string str() const {
+        std::string str() const {
             return type() == bson::String ?
-              string(valuestr(), valuestrsize()-1) : string();
+              std::string(valuestr(), valuestrsize()-1) : std::string();
         }
 
         /** Get javascript code of a CodeWScope data element. */
@@ -427,13 +427,13 @@ namespace bson {
         }
 
         //string _asCode() const;
-        inline string _asCode() const {
+        inline std::string _asCode() const {
             switch( type() ) {
             case bson::String:
             case Code:
-                return string(valuestr(), valuestrsize()-1);
+                return std::string(valuestr(), valuestrsize()-1);
             case CodeWScope:
-                return string(codeWScopeCode(), *(int*)(valuestr())-1);
+                return std::string(codeWScopeCode(), *(int*)(valuestr())-1);
             default:
                 break;
             }

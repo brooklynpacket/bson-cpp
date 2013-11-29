@@ -45,7 +45,7 @@ namespace bson {
         OID() : a(0), b(0) { }
 
         /** init from a 24 char hex string */
-        explicit OID(const string &s) { init(s); }
+        explicit OID(const std::string &s) { init(s); }
 
         /** initialize to 'null' */
         void clear() { a = 0; b = 0; }
@@ -62,8 +62,8 @@ namespace bson {
           { return compare( other ) <= 0; }
 
         /** @return the object ID output as 24 hex digits */
-        string str() const { return toHexLower(data, 12); }
-        string toString() const { return str(); }
+        std::string str() const { return toHexLower(data, 12); }
+        std::string toString() const { return str(); }
 
         static OID gen() { OID o; o.init(); return o; }
 
@@ -71,7 +71,7 @@ namespace bson {
         void init();
 
         /** init from a 24 char hex string */
-        void init( string s );
+        void init( std::string s );
 
         /** Set to the min/max OID that could be generated at given timestamp.*/
         void init( Date_t date, bool max=false );

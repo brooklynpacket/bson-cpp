@@ -128,7 +128,7 @@ namespace bson {
         }
     }
 
-    void OID::init( string s ) {
+    void OID::init( std::string s ) {
         assert( s.size() == 24 );
         const char *p = s.c_str();
         for( int i = 0; i < 12; i++ ) {

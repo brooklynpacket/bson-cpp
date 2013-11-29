@@ -31,9 +31,6 @@
 #include "bsonelement.h"
 
 namespace bson {
-    using std::string;
-    using std::stringstream;
-
     typedef std::set< BSONElement, BSONElementCmpWithoutField > BSONElementSet;
     typedef std::multiset< BSONElement, BSONElementCmpWithoutField > BSONElementMSet;
 
@@ -151,18 +148,18 @@ namespace bson {
             notation. This is an abbreviated representation which might be used
             for logging.
         */
-        string toString( bool isArray = false, bool full=false ) const;
+        std::string toString( bool isArray = false, bool full=false ) const;
         void toString(StringBuilder& s, bool isArray = false, bool full=false )
           const;
 
         /** Properly formatted JSON string.
             @param pretty if true we try to add some lf's and indentation
         */
-        string jsonString( JsonStringFormat format = Strict, int pretty = 0 )
+        std::string jsonString( JsonStringFormat format = Strict, int pretty = 0 )
           const;
 
         /** note: addFields always adds _id even if not specified */
-        int addFields(BSONObj& from, std::set<string>& fields); /* returns n added */
+        int addFields(BSONObj& from, std::set<std::string>& fields); /* returns n added */
 
         /** returns # of top level fields in the object
            note: iterates to count the fields
@@ -171,7 +168,7 @@ namespace bson {
 
         /** adds the field names to the fields set.  does NOT clear it
             (appends). */
-        int getFieldNames(std::set<string>& fields) const;
+        int getFieldNames(std::set<std::string>& fields) const;
 
         /** @return the specified element.  element.eoo() will be true if not found.
             @param name field to find. supports dot (".") notation to reach into embedded objects.
@@ -182,7 +179,7 @@ namespace bson {
             @param name field to find. supports dot (".") notation to reach into embedded objects.
              for example "x.y" means "in the nested object in field x, retrieve field y"
         */
-        BSONElement getFieldDotted(const string& name) const {
+        BSONElement getFieldDotted(const std::string& name) const {
             return getFieldDotted( name.c_str() );
         }
 
@@ -217,14 +214,14 @@ namespace bson {
             return getField(field);
         }
 
-        BSONElement operator[] (const string& field) const {
+        BSONElement operator[] (const std::string& field) const {
             return getField(field);
         }
 
         BSONElement operator[] (int field) const {
             StringBuilder ss;
             ss << field;
-            string s = ss.str();
+            std::string s = ss.str();
             return getField(s.c_str());
         }
 
@@ -292,7 +289,7 @@ namespace bson {
         void dump() const;
 
         /** Alternative output format */
-        string hexDump() const;
+        std::string hexDump() const;
 
         /**wo='well ordered'.  fields must be in same order in each object.
            Ordering is with respect to the signs of the elements
@@ -380,7 +377,7 @@ namespace bson {
         bool valid() const;
 
         /** @return an md5 value for this object. */
-        string md5() const;
+        std::string md5() const;
 
         bool operator==( const BSONObj& other ) const { return equal( other ); }
 

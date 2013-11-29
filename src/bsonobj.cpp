@@ -142,9 +142,9 @@ namespace bson {
         return 0;
     }
 
-    string escape( string s , bool escape_slash=false) {
+    std::string escape( std::string s , bool escape_slash=false) {
         StringBuilder ret;
-        for ( string::iterator i = s.begin(); i != s.end(); ++i ) {
+        for ( std::string::iterator i = s.begin(); i != s.end(); ++i ) {
             switch ( *i ) {
             case '"':
                 ret << "\\\"";
@@ -184,19 +184,19 @@ namespace bson {
         return ret.str();
     }
 
-    string BSONElement::jsonString( JsonStringFormat format, bool
+    std::string BSONElement::jsonString( JsonStringFormat format, bool
       includeFieldNames, int pretty ) const {
         BSONType t = type();
         if ( t == Undefined )
             return "";
 
-        stringstream s;
+        std::stringstream s;
         if ( includeFieldNames )
             s << '"' << escape( fieldName() ) << "\" : ";
         switch ( type() ) {
         case bson::String:
         case Symbol:
-            s << '"' << escape( string(valuestr(), valuestrsize()-1) ) << '"';
+            s << '"' << escape( std::string(valuestr(), valuestrsize()-1) ) << '"';
             break;
         case NumberLong:
             s << _numberLong();
@@ -211,7 +211,7 @@ namespace bson {
             else {
                 StringBuilder ss;
                 ss << "Number " << number() << " cannot be represented in JSON";
-                string message = ss.str();
+                std::string message = ss.str();
                 massert( 10311 ,  message.c_str(), false );
             }
             break;
@@ -362,7 +362,7 @@ namespace bson {
             StringBuilder ss;
             ss << "Cannot create a properly formatted JSON string with "
                << "element: " << toString() << " of type: " << type();
-            string message = ss.str();
+            std::string message = ss.str();
             massert( 10312 ,  message.c_str(), false );
         }
         return s.str();
@@ -582,7 +582,7 @@ namespace bson {
         return fe.getGtLtOp();
     }
 
-    FieldCompareResult compareDottedFieldNames(const string& l, const string& r)
+    FieldCompareResult compareDottedFieldNames(const std::string& l, const std::string& r)
     {
         static int maxLoops = 1024 * 1024;
 
@@ -601,11 +601,11 @@ namespace bson {
             size_t a = l.find( '.' , lstart );
             size_t b = r.find( '.' , rstart );
 
-            size_t lend = a == string::npos ? l.size() : a;
-            size_t rend = b == string::npos ? r.size() : b;
+            size_t lend = a == std::string::npos ? l.size() : a;
+            size_t rend = b == std::string::npos ? r.size() : b;
 
-            const string& c = l.substr( lstart , lend - lstart );
-            const string& d = r.substr( rstart , rend - rstart );
+            const std::string& c = l.substr( lstart , lend - lstart );
+            const std::string& d = r.substr( rstart , rend - rstart );
 
             int x = lexNumCmp( c.c_str(), d.c_str() );
 
@@ -624,10 +624,10 @@ namespace bson {
 
     /* BSONObj ------------------------------------------------------------*/
 
-    string BSONObj::md5() const
+    std::string BSONObj::md5() const
       { return md5::md5simpledigest((const md5_byte_t*)_objdata , objsize() ); }
 
-    string BSONObj::jsonString( JsonStringFormat format, int pretty ) const {
+    std::string BSONObj::jsonString( JsonStringFormat format, int pretty ) const {
 
         if ( isEmpty() ) return "{}";
 
@@ -804,7 +804,7 @@ namespace bson {
         if ( e.eoo() ) {
             const char *p = strchr(name.data(), '.');
             if ( p ) {
-                string left(name.data(), p-name.data());
+                std::string left(name.data(), p-name.data());
                 const char* next = p+1;
                 BSONElement e = getField( left.c_str() );
 
@@ -854,7 +854,7 @@ namespace bson {
         BSONElement sub;
 
         if ( p ) {
-            sub = getField( string(name, p-name) );
+            sub = getField( std::string(name, p-name) );
             name = p + 1;
         }
         else {
@@ -968,7 +968,7 @@ namespace bson {
     */
 
     /* grab names of all the fields in this object */
-    int BSONObj::getFieldNames(std::set<string>& fields) const {
+    int BSONObj::getFieldNames(std::set<std::string>& fields) const {
         int n = 0;
         BSONObjIterator i(*this);
         while ( i.moreWithEOO() ) {
@@ -984,7 +984,7 @@ namespace bson {
     /* note: addFields always adds _id even if not specified
        returns n added not counting _id unless requested.
     */
-    int BSONObj::addFields(BSONObj& from, std::set<string>& fields) {
+    int BSONObj::addFields(BSONObj& from, std::set<std::string>& fields) {
         assert( isEmpty() && !isOwned() ); /* partial implementation for now. */
 
         BSONObjBuilder b;
@@ -1102,8 +1102,8 @@ namespace bson {
 
     void BSONObj::dump() const {}
 
-    string BSONObj::hexDump() const {
-        stringstream ss;
+    std::string BSONObj::hexDump() const {
+        std::stringstream ss;
         const char *d = objdata();
         int size = objsize();
         for( int i = 0; i < size; ++i ) {
@@ -1120,16 +1120,16 @@ namespace bson {
     }
 
     void nested2dotted(BSONObjBuilder& b, const BSONObj& obj,
-      const string& base) {
+      const std::string& base) {
         BSONObjIterator it(obj);
         while (it.more()) {
             BSONElement e = it.next();
             if (e.type() == Object) {
-                string newbase = base + e.fieldName() + ".";
+                std::string newbase = base + e.fieldName() + ".";
                 nested2dotted(b, e.embeddedObject(), newbase);
             }
             else {
-                string newbase = base + e.fieldName();
+                std::string newbase = base + e.fieldName();
                 b.appendAs(e, newbase);
             }
         }
@@ -1263,7 +1263,7 @@ namespace bson {
         }
     }
 
-    const string BSONObjBuilder::numStrs[] = {
+    const std::string BSONObjBuilder::numStrs[] = {
         "0",  "1",  "2",  "3",  "4",  "5",  "6",  "7",  "8",  "9",
         "10", "11", "12", "13", "14", "15", "16", "17", "18", "19",
         "20", "21", "22", "23", "24", "25", "26", "27", "28", "29",
@@ -1277,7 +1277,7 @@ namespace bson {
     };
 
     bool BSONObjBuilder::appendAsNumber( const StringData& fieldName ,
-      const string& data ) {
+      const std::string& data ) {
         if ( data.size() == 0 || data == "-")
             return false;
 

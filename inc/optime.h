@@ -96,23 +96,23 @@ namespace bson {
 
         bool isNull() const { return secs == 0; }
 
-        string toStringLong() const {
+        std::string toStringLong() const {
             char buf[64];
             time_t_to_String(secs, buf);
-            stringstream ss;
+            std::stringstream ss;
             ss << time_t_to_String_short(secs) << ' ';
             ss << std::hex << secs << ':' << i;
             return ss.str();
         }
 
-        string toStringPretty() const {
-            stringstream ss;
+        std::string toStringPretty() const {
+            std::stringstream ss;
             ss << time_t_to_String_short(secs) << ':' << std::hex << i;
             return ss.str();
         }
 
-        string toString() const {
-            stringstream ss;
+        std::string toString() const {
+            std::stringstream ss;
             ss << std::hex << secs << ':' << i;
             return ss.str();
         }

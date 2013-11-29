@@ -39,15 +39,11 @@
 #include "stringdata.h"
 
 namespace bson {
-
-    using std::string;
-    using std::stringstream;
-
     class assertion : public std::exception {
     public:
-        assertion( unsigned u , const string& s )
+        assertion( unsigned u , const std::string& s )
             : id( u ) , msg( s ) {
-            stringstream ss;
+            std::stringstream ss;
             ss << "BsonAssertion id: " << u << " " << s;
             full = ss.str();
         }
@@ -57,8 +53,8 @@ namespace bson {
         virtual const char* what() const throw() { return full.c_str(); }
 
         unsigned id;
-        string msg;
-        string full;
+        std::string msg;
+        std::string full;
     };
 
 #if !defined(assert)

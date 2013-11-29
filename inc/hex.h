@@ -37,7 +37,7 @@ namespace bson {
         return (char)(( fromHex( c[ 0 ] ) << 4 ) | fromHex( c[ 1 ] ));
     }
 
-    inline string toHex(const void* inRaw, int len) {
+    inline std::string toHex(const void* inRaw, int len) {
         static const char hexchars[] = "0123456789ABCDEF";
 
         StringBuilder out;
@@ -53,7 +53,7 @@ namespace bson {
         return out.str();
     }
 
-    inline string toHexLower(const void* inRaw, int len) {
+    inline std::string toHexLower(const void* inRaw, int len) {
         static const char hexchars[] = "0123456789abcdef";
 
         StringBuilder out;

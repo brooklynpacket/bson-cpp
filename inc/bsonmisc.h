@@ -51,7 +51,7 @@ namespace bson {
     };
 
     FieldCompareResult
-      compareDottedFieldNames( const string& l , const string& r );
+      compareDottedFieldNames( const std::string& l , const std::string& r );
 
     /** Use BSON macro to build a BSONObj from a stream
 

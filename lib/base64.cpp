@@ -19,13 +19,11 @@
 #include "base64.h"
 #include <assert.h>
 
-using namespace std;
-
 namespace base64 {
 
     Alphabet alphabet;
 
-    void encode( stringstream& ss , const char * data , int size ) {
+    void encode( std::stringstream& ss , const char * data , int size ) {
         for ( int i=0; i<size; i+=3 ) {
             int left = size - i;
             const unsigned char * start = (const unsigned char*)data + i;
@@ -65,18 +63,18 @@ namespace base64 {
     }
 
 
-    string encode( const char * data , int size ) {
-        stringstream ss;
+    std::string encode( const char * data , int size ) {
+        std::stringstream ss;
         encode( ss , data ,size );
         return ss.str();
     }
 
-    string encode( const string& s ) {
+    std::string encode( const std::string& s ) {
         return encode( s.c_str() , s.size() );
     }
 
 
-    void decode( stringstream& ss , const string& s ) {
+    void decode( std::stringstream& ss , const std::string& s ) {
         assert( s.size() % 4 == 0 );
         const unsigned char * data = (const unsigned char*)s.c_str();
         int size = s.size();
@@ -102,8 +100,8 @@ namespace base64 {
         }
     }
 
-    string decode( const string& s ) {
-        stringstream ss;
+    std::string decode( const std::string& s ) {
+        std::stringstream ss;
         decode( ss , s );
         return ss.str();
     }

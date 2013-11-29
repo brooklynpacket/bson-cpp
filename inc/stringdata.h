@@ -21,9 +21,6 @@
 #include <cstring>
 
 namespace bson {
-
-    using std::string;
-
     /* A StringData object wraps a 'const string&' or a 'const char*' without
      * copying its contents. The most common usage is as a function argument
      * that takes any of the two forms of strings above. Fundamentally, this
@@ -50,7 +47,7 @@ namespace bson {
             : _data(c), _size(len) {}
 
         /** Construct a StringData, for the case of a std::string. */
-        StringData( const string& s )
+        StringData( const std::string& s )
             : _data(s.c_str()), _size((unsigned) s.size()) {}
 
         // Construct a StringData explicitly, for the case of a literal whose

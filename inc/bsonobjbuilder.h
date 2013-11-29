@@ -37,26 +37,26 @@ namespace bson {
     template<typename T>
     class BSONFieldValue {
     public:
-        BSONFieldValue( const string& name , const T& t ) {
+        BSONFieldValue( const std::string& name , const T& t ) {
             _name = name;
             _t = t;
         }
 
         const T& value() const { return _t; }
-        const string& name() const { return _name; }
+        const std::string& name() const { return _name; }
 
     private:
-        string _name;
+        std::string _name;
         T _t;
     };
 
     template<typename T>
     class BSONField {
     public:
-        BSONField( const string& name , const string& longName="" )
+        BSONField( const std::string& name , const std::string& longName="" )
             : _name(name), _longName(longName) {}
-        const string& name() const { return _name; }
-        operator string() const { return _name; }
+        const std::string& name() const { return _name; }
+        operator std::string() const { return _name; }
 
         BSONFieldValue<T> make( const T& t ) const {
             return BSONFieldValue<T>( _name , t );
@@ -74,8 +74,8 @@ namespace bson {
         }
 
     private:
-        string _name;
-        string _longName;
+        std::string _name;
+        std::string _longName;
     };
 
     /** Utility for creating a BSONObj.
@@ -300,7 +300,7 @@ namespace bson {
         /** tries to append the data as a number
          * @return true if the data was able to be converted to a number
          */
-        bool appendAsNumber( const StringData& fieldName , const string& data );
+        bool appendAsNumber( const StringData& fieldName , const std::string& data );
 
         /** Append a BSON Object ID (OID type).
             @deprecated Generally, it is preferred to use the append
@@ -414,7 +414,7 @@ namespace bson {
             return append(fieldName, str, (int) strlen(str)+1);
         }
         /** Append a string element */
-        BSONObjBuilder& append(const StringData& fieldName, const string& str) {
+        BSONObjBuilder& append(const StringData& fieldName, const std::string& str) {
             return append(fieldName, str.c_str(), (int) str.size()+1);
         }
 
@@ -624,7 +624,7 @@ namespace bson {
 
         void appendKeys( const BSONObj& keyPattern , const BSONObj& values );
 
-        static string numStr( int i ) {
+        static std::string numStr( int i ) {
             if (i>=0 && i<100)
                 return numStrs[i];
             StringBuilder o;
@@ -644,8 +644,8 @@ namespace bson {
         // prevent implicit string conversions which would allow bad things
         // like BSON( BSON( "foo" << 1 ) << 2 )
         struct ForceExplicitString {
-            ForceExplicitString( const string &str ) : str_( str ) {}
-            string str_;
+            ForceExplicitString( const std::string &str ) : str_( str ) {}
+            std::string str_;
         };
 
         /** Stream oriented way to add field names and values. */
@@ -705,7 +705,7 @@ namespace bson {
         BSONSizeTracker * _tracker;
         bool _doneCalled;
 
-        static const string numStrs[100]; // cache of 0 to 99 inclusive
+        static const std::string numStrs[100]; // cache of 0 to 99 inclusive
     };
 
     class BSONArrayBuilder : NonCopyable {
@@ -794,7 +794,7 @@ namespace bson {
             char *r;
             long int n = strtol( name.data(), &r, 10 );
             if ( *r )
-                uasserted( 13048, (string)"can't append to array using string"
+                uasserted( 13048, (std::string)"can't append to array using string"
                   " field name [" + name.data() + "]" );
             fill(n);
         }
@@ -815,7 +815,7 @@ namespace bson {
             return _b.obj();
         }
 
-        string num() { return _b.numStr(_i++); }
+        std::string num() { return _b.numStr(_i++); }
         int _i;
         BSONObjBuilder _b;
     };

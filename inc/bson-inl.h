@@ -61,7 +61,7 @@ namespace bson {
     inline BSONObj BSONElement::embeddedObjectUserCheck() const {
         if ( isABSONObj() )
             return BSONObj(value());
-        stringstream ss;
+        std::stringstream ss;
         ss << "invalid parameter: expected an object (" << fieldName() << ")";
         uasserted( 10065 , ss.str() );
         return BSONObj(); // never reachable
@@ -188,7 +188,7 @@ namespace bson {
     /* add all the fields from the object specified to this object if they don't
        exist */
     inline BSONObjBuilder& BSONObjBuilder::appendElementsUnique(BSONObj x) {
-        std::set<string> have;
+        std::set<std::string> have;
         {
             BSONObjIterator i = iterator();
             while ( i.more() )
@@ -310,7 +310,7 @@ namespace bson {
     }
 
     // {a: {b:1}} -> {a.b:1}
-    void nested2dotted(BSONObjBuilder& b, const BSONObj& obj, const string&
+    void nested2dotted(BSONObjBuilder& b, const BSONObj& obj, const std::string&
       base="");
     inline BSONObj nested2dotted(const BSONObj& obj) {
         BSONObjBuilder b;
@@ -345,7 +345,7 @@ namespace bson {
      * also, dotted2nested ignores order
      */
 
-    typedef std::map<string, BSONElement> BSONMap;
+    typedef std::map<std::string, BSONElement> BSONMap;
     inline BSONMap bson2map(const BSONObj& obj) {
         BSONMap m;
         BSONObjIterator it(obj);
@@ -371,7 +371,7 @@ namespace bson {
         return s;
     }
 
-    inline string BSONObj::toString( bool isArray, bool full ) const {
+    inline std::string BSONObj::toString( bool isArray, bool full ) const {
         if ( isEmpty() ) return "{}";
         StringBuilder s;
         toString(s, isArray, full);
@@ -534,7 +534,7 @@ namespace bson {
         default: {
             StringBuilder ss;
             ss << "BSONElement: bad type " << (int) type();
-            string msg = ss.str();
+            std::string msg = ss.str();
             massert( 13655 , msg.c_str(),false);
         }
         }
@@ -600,7 +600,7 @@ namespace bson {
             {
                 StringBuilder ss;
                 ss << "BSONElement: bad type " << (int) type();
-                string msg = ss.str();
+                std::string msg = ss.str();
                 massert(10320 , msg.c_str(),false);
             }
         }
@@ -609,7 +609,7 @@ namespace bson {
         return totalSize;
     }
 
-    inline string BSONElement::toString( bool includeFieldName, bool full )
+    inline std::string BSONElement::toString( bool includeFieldName, bool full )
       const {
         StringBuilder s;
         toString(s, includeFieldName, full);
@@ -725,7 +725,7 @@ namespace bson {
         if ( e.eoo() ) {
             const char *p = strchr(name, '.');
             if ( p ) {
-                string left(name, p-name);
+                std::string left(name, p-name);
                 BSONObj sub = getObjectField(left.c_str());
                 return sub.isEmpty() ? BSONElement() : sub.getFieldDotted(p+1);
             }
@@ -764,7 +764,7 @@ namespace bson {
 
     inline BSONObj BSONElement::Obj() const { return embeddedObjectUserCheck(); }
 
-    inline BSONElement BSONElement::operator[] (const string& field) const {
+    inline BSONElement BSONElement::operator[] (const std::string& field) const {
         BSONObj o = Obj();
         return o[field];
     }
