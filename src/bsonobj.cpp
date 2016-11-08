@@ -19,9 +19,9 @@
 #include "bson.h"
 #include "oid.h"
 #include "bsonobj.h"
-#include "lib/atomic_int.h"
-#include "lib/base64.h"
-#include "lib/md5.hpp"
+#include "../lib/atomic_int.h"
+#include "../lib/base64.h"
+#include "md5.h" // XXX: From Griffin common
 #include <limits>
 
 //#include "util/json.h"
@@ -206,7 +206,7 @@ namespace bson {
             if ( number() >= -std::numeric_limits< double >::max() &&
                     number() <= std::numeric_limits< double >::max() ) {
                 s.precision( 16 );
-                s << number();
+                s << std::fixed << number();
             }
             else {
                 StringBuilder ss;
@@ -625,7 +625,7 @@ namespace bson {
     /* BSONObj ------------------------------------------------------------*/
 
     std::string BSONObj::md5() const
-      { return md5::md5simpledigest((const md5_byte_t*)_objdata , objsize() ); }
+    { return Bpc::md5(_objdata , objsize() ); }
 
     std::string BSONObj::jsonString( JsonStringFormat format, int pretty ) const {
 
@@ -968,29 +968,37 @@ namespace bson {
     */
 
     /* grab names of all the fields in this object */
+    template <typename String> /* Might be std::string, string_view, etc. */
+    int getFieldNamesImpl(BSONObjIterator i, std::set<String>& fields) {
+      int n = 0;
+      while ( i.moreWithEOO() ) {
+        BSONElement e = i.next();
+        if ( e.eoo() )
+          break;
+        fields.insert(e.fieldName()); /* Construct from C string. */
+        ++n;
+      }
+      return n;
+    }
+
     int BSONObj::getFieldNames(std::set<std::string>& fields) const {
-        int n = 0;
-        BSONObjIterator i(*this);
-        while ( i.moreWithEOO() ) {
-            BSONElement e = i.next();
-            if ( e.eoo() )
-                break;
-            fields.insert(e.fieldName());
-            n++;
-        }
-        return n;
+      return getFieldNamesImpl(BSONObjIterator{ *this }, fields);
+    }
+
+    int BSONObj::getFieldNames(std::set<boost::string_view>& fields) const {
+      return getFieldNamesImpl(BSONObjIterator{ *this }, fields);
     }
 
     /* note: addFields always adds _id even if not specified
        returns n added not counting _id unless requested.
     */
-    int BSONObj::addFields(BSONObj& from, std::set<std::string>& fields) {
+    size_t BSONObj::addFields(BSONObj& from, std::set<std::string>& fields) {
         assert( isEmpty() && !isOwned() ); /* partial implementation for now. */
 
         BSONObjBuilder b;
 
-        int N = fields.size();
-        int n = 0;
+        auto N = fields.size();
+        size_t n = 0;
         BSONObjIterator i(from);
         bool gotId = false;
         while ( i.moreWithEOO() ) {

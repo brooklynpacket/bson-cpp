@@ -799,7 +799,7 @@ namespace bson {
             fill(n);
         }
 
-        void fill (int upTo){
+        void fill (long int upTo){
             while( _i < upTo )
                 append( nullElt() );
         }

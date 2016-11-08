@@ -30,7 +30,7 @@ namespace bson {
         // It is assumed that the calls to prepareContext will be made with the 'name'
         // parameter in lex ascending order.
         void prepareContext( std::string &name ) {
-            int i = 1, n = _builders.size();
+            int i = 1, n = static_cast<int>(_builders.size());
             while( i < n &&
                     name.substr( 0, _builders[ i ].first.length() ) == _builders[ i ].first &&
                     ( name[ _builders[i].first.length() ] == '.' || name[ _builders[i].first.length() ] == 0 )

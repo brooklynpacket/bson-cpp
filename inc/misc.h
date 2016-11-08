@@ -76,7 +76,7 @@ namespace bson {
         operator const unsigned long long&() const { return millis; }
         std::string toString() const {
             char buf[64];
-            time_t_to_String(millis/1000, buf);
+            time_t_to_String(static_cast<time_t>(millis / 1000), buf);
             return buf;
         }
     };

@@ -49,11 +49,11 @@ namespace bson {
         }
 
         /** @return true if more elements exist to be enumerated. */
-        bool more() { return _pos < _theend; }
+        bool more() const { return _pos < _theend; }
 
         /** @return true if more elements exist to be enumerated INCLUDING the
             EOO element which is always at the end. */
-        bool moreWithEOO() { return _pos <= _theend; }
+        bool moreWithEOO() const { return _pos <= _theend; }
 
         /** @return the next element in the object. For the final element,
             element.eoo() will be true. */
@@ -72,7 +72,7 @@ namespace bson {
         void operator++() { next(); }
         void operator++(int) { next(); }
 
-        BSONElement operator*() {
+        BSONElement operator*() const {
             assert( _pos <= _theend );
             return BSONElement(_pos);
         }
@@ -92,7 +92,7 @@ namespace bson {
             _fields = 0;
         }
 
-        bool more() {
+        bool more() const {
             return _cur < _nfields;
         }
 

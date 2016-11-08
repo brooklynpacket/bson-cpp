@@ -23,6 +23,8 @@
 #include <string>
 #include <memory>
 
+#include <boost/utility/string_view.hpp>
+
 //#include <boost/intrusive_ptr.hpp>
 //#include "lib/atomic_int.h"
 
@@ -159,7 +161,7 @@ namespace bson {
           const;
 
         /** note: addFields always adds _id even if not specified */
-        int addFields(BSONObj& from, std::set<std::string>& fields); /* returns n added */
+        size_t addFields(BSONObj& from, std::set<std::string>& fields); /* returns n added */
 
         /** returns # of top level fields in the object
            note: iterates to count the fields
@@ -169,6 +171,8 @@ namespace bson {
         /** adds the field names to the fields set.  does NOT clear it
             (appends). */
         int getFieldNames(std::set<std::string>& fields) const;
+        int getFieldNames(std::set<boost::string_view>& fields) const;
+
 
         /** @return the specified element.  element.eoo() will be true if not found.
             @param name field to find. supports dot (".") notation to reach into embedded objects.

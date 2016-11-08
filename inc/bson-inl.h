@@ -372,7 +372,7 @@ namespace bson {
     }
 
     inline std::string BSONObj::toString( bool isArray, bool full ) const {
-        if ( isEmpty() ) return "{}";
+        if ( isEmpty() ) return isArray ? "[]" : "{}";
         StringBuilder s;
         toString(s, isArray, full);
         return s.str();
@@ -380,7 +380,7 @@ namespace bson {
     inline void BSONObj::toString(StringBuilder& s,  bool isArray, bool full )
       const {
         if ( isEmpty() ) {
-            s << "{}";
+            s << (isArray ? "[]" : "{}");
             return;
         }
 
@@ -618,7 +618,7 @@ namespace bson {
     inline void BSONElement::toString(StringBuilder& s, bool includeFieldName,
       bool full ) const {
         if ( includeFieldName && type() != EOO )
-            s << fieldName() << ": ";
+            s << "\"" << fieldName() << "\": ";
         switch ( type() ) {
         case EOO:
             s << "EOO";

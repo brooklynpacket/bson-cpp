@@ -16,8 +16,8 @@
  */
 #include <unistd.h>
 #include "oid.h"
-#include "lib/atomic_int.h"
-#include "lib/nonce.h"
+#include "../lib/atomic_int.h"
+#include "../lib/nonce.h"
 
 
 //#include <boost/static_assert.hpp>

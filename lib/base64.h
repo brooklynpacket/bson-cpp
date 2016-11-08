@@ -60,8 +60,8 @@ namespace base64 {
 
     extern Alphabet alphabet;
 
-    void encode( std::stringstream& ss , const char * data , int size );
-    std::string encode( const char * data , int size );
+    void encode( std::stringstream& ss , const char * data , size_t size );
+    std::string encode( const char * data , size_t size );
     std::string encode( const std::string& s );
 
     void decode( std::stringstream& ss , const std::string& s );

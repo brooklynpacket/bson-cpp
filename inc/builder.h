@@ -274,7 +274,7 @@ namespace bson {
         void appendDoubleNice( double x ) {
             int prev = _buf.l;
             char * start = _buf.grow( 32 );
-            int z = sprintf( start , "%.16g" , x );
+            int z = sprintf( start , "%.16f" , x );
             assert( z >= 0 );
             _buf.l = prev + z;
             if( strchr(start, '.') == 0 && strchr(start, 'E') == 0
