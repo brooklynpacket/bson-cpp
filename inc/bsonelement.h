@@ -38,7 +38,6 @@ namespace bson {
     /* l and r MUST have same type when called: check that first. */
     int compareElementValues(const BSONElement& l, const BSONElement& r);
 
-
     /** BSONElement represents an "element" in a BSONObj.
         So for the object { a : 3, b : "abc" },
         'a : 3' is the first element (key+value).
@@ -175,7 +174,7 @@ namespace bson {
             @see Bool(), trueValue()
         */
         Date_t date() const {
-            return *reinterpret_cast< const Date_t* >( value() );
+            return extract<Date_t>( value() );
         }
 
         /** Convert the value to boolean, regardless of its type, in a
@@ -192,13 +191,13 @@ namespace bson {
 
         /** Return double value for this field. MUST be NumberDouble type. */
         double _numberDouble() const
-          {return *reinterpret_cast< const double* >( value() ); }
+          {return extract<double>( value() ); }
         /** Return double value for this field. MUST be NumberInt type. */
         int _numberInt() const
-          {return *reinterpret_cast< const int* >( value() ); }
+          {return extract<int>( value() ); }
         /** Return double value for this field. MUST be NumberLong type. */
         long long _numberLong() const
-          {return *reinterpret_cast< const long long* >( value() ); }
+          {return extract<long long>( value() ); }
 
         /** Retrieve int value for the element safely.
             Zero returned if not a number. */
@@ -221,8 +220,8 @@ namespace bson {
 
         /** Retrieve the object ID stored in the object.
             You must ensure the element is of type jstOID first. */
-        const bson::OID &__oid() const
-          { return *reinterpret_cast< const bson::OID* >( value() ); }
+        bson::OID __oid() const
+          { return extract<bson::OID>( value() ); }
 
         /** True if element is null. */
         bool isNull() const {
@@ -234,12 +233,12 @@ namespace bson {
             @return string size including terminating null
         */
         int valuestrsize() const {
-            return *reinterpret_cast< const int* >( value() );
+            return extract<int>( value() );
         }
 
         // for objects the size *includes* the size of the size field
         int objsize() const {
-            return *reinterpret_cast< const int* >( value() );
+            return extract<int>( value() );
         }
 
         /** Get a string's value.  Also gives you start of the real data for an
@@ -385,11 +384,11 @@ namespace bson {
             return value() + 4;
         }
 
-        const bson::OID& dbrefOID() const {
+        bson::OID dbrefOID() const {
             uassert( 10064 ,  "not a dbref" , type() == DBRef );
             const char * start = value();
-            start += 4 + *reinterpret_cast< const int* >( start );
-            return *reinterpret_cast< const bson::OID* >( start );
+            start += 4 + extract<int>( start );
+            return extract<bson::OID>( start );
         }
 
         /** this does not use fieldName in the comparison, just the value */
@@ -443,7 +442,7 @@ namespace bson {
 
         inline OpTime _opTime() const {
           if(type() == bson::Date || type() == Timestamp)
-            return OpTime(*reinterpret_cast< const unsigned long long* >(value()));
+            return OpTime(extract<unsigned long long>(value()));
           return OpTime();
         }
 
@@ -527,11 +526,11 @@ namespace bson {
     inline bool BSONElement::trueValue() const {
         switch( type() ) {
         case NumberLong:
-            return *reinterpret_cast< const long long* >( value() ) != 0;
+            return extract<long long>( value() ) != 0;
         case NumberDouble:
-            return *reinterpret_cast< const double* >( value() ) != 0;
+            return extract<double>( value() ) != 0;
         case NumberInt:
-            return *reinterpret_cast< const int* >( value() ) != 0;
+            return extract<int>( value() ) != 0;
         case bson::Bool:
             return boolean();
         case EOO:
@@ -577,9 +576,9 @@ namespace bson {
         case NumberDouble:
             return _numberDouble();
         case NumberInt:
-            return *reinterpret_cast< const int* >( value() );
+            return extract<int>( value() );
         case NumberLong:
-            return (double) *reinterpret_cast< const long long* >( value() );
+            return (double) extract<long long>( value() );
         default:
             return 0;
         }

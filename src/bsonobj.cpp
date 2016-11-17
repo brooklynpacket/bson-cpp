@@ -19,10 +19,10 @@
 #include "bson.h"
 #include "oid.h"
 #include "bsonobj.h"
-#include "../lib/atomic_int.h"
 #include "../lib/base64.h"
 #include "md5.h" // XXX: From Griffin common
 #include <limits>
+#include <boost/lexical_cast.hpp>
 
 //#include "util/json.h"
 
@@ -1321,8 +1321,7 @@ namespace bson {
         }
 
         try {
-            //long long num = boost::lexical_cast<long long>( data );
-            long long num = stoll(data);
+            long long num = boost::lexical_cast<long long>( data );
             append( fieldName , num );
             return true;
         }

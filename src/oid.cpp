@@ -14,9 +14,9 @@
  *    See the License for the specific language governing permissions and
  *    limitations under the License.
  */
+#include <atomic>
 #include <unistd.h>
 #include "oid.h"
-#include "../lib/atomic_int.h"
 #include "../lib/nonce.h"
 
 
@@ -49,8 +49,10 @@ namespace bson {
         x._pid ^= (unsigned short) p;
         // when the pid is greater than 16 bits, let the high bits modulate the
         // machine id field.
-        unsigned short& rest = (unsigned short &) x._machineNumber[1];
+        unsigned short rest{};
+        memcpy(&rest, &x._machineNumber[1], sizeof(rest));
         rest ^= p >> 16;
+        memcpy(&x._machineNumber[1], &rest, sizeof(rest));
     }
 
     OID::MachineAndPid OID::genMachineAndPid() {
@@ -86,12 +88,11 @@ namespace bson {
     }
 
     unsigned OID::getMachineId() {
-        unsigned char x[4];
-        x[0] = ourMachineAndPid._machineNumber[0];
-        x[1] = ourMachineAndPid._machineNumber[1];
-        x[2] = ourMachineAndPid._machineNumber[2];
-        x[3] = 0;
-        return (unsigned&) x[0];
+        uint32_t u{};
+        u |= ourMachineAndPid._machineNumber[0];
+        u |= ourMachineAndPid._machineNumber[1] << 8;
+        u |= ourMachineAndPid._machineNumber[2] << 16;
+        return { u };
     }
 
     void OID::justForked() {
@@ -106,7 +107,7 @@ namespace bson {
     }
 
     void OID::init() {
-        static mongo::AtomicUInt inc = (unsigned) security.getNonce();
+        static std::atomic<unsigned> inc{ (unsigned)security.getNonce() };
 
         {
             unsigned t = (unsigned) time(0);
@@ -145,10 +146,14 @@ namespace bson {
         data[2] = T[1];
         data[3] = T[0];
 
-        if (max)
-            *(long long*)(data + 4) = 0xFFFFFFFFFFFFFFFFll;
-        else
-            *(long long*)(data + 4) = 0x0000000000000000ll;
+        if (max) {
+            long long unsigned const d{ 0xFFFFFFFFFFFFFFFFll };
+            memcpy(data + 4, &d, sizeof(d));
+        }
+        else {
+            long long unsigned const d{ 0x0000000000000000ll };
+            memcpy(data + 4, &d, sizeof(d));
+        }
     }
 
     time_t OID::asTimeT() {

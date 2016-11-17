@@ -23,8 +23,8 @@ namespace base64 {
 
     Alphabet alphabet;
 
-    void encode( std::stringstream& ss , const char * data , size_t size ) {
-        for ( int i=0; i<size; i+=3 ) {
+    void encode( std::stringstream& ss , const char * data , size_t const size ) {
+        for ( int i=0; i<static_cast<int>(size); i+=3 ) {
             size_t left = size - i;
             const unsigned char * start = (const unsigned char*)data + i;
 
@@ -77,10 +77,10 @@ namespace base64 {
     void decode( std::stringstream& ss , const std::string& s ) {
         assert( s.size() % 4 == 0 );
         const unsigned char * data = (const unsigned char*)s.c_str();
-        size_t size = s.size();
+        size_t const size = s.size();
 
         unsigned char buf[3];
-        for ( int i=0; i<size; i+=4) {
+        for ( int i=0; i<static_cast<int>(size); i+=4) {
             const unsigned char * start = data + i;
             buf[0] = ( ( alphabet.decode[start[0]] << 2 ) & 0xFC ) |
                      ( ( alphabet.decode[start[1]] >> 4 ) & 0x3 );

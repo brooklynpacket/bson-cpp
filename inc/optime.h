@@ -18,6 +18,12 @@
 #pragma once
 
 namespace bson {
+    template <typename T>
+    T extract(char const *addr) {
+      T ret{};
+      memcpy(&ret, addr, sizeof(ret));
+      return ret;
+    }
 
     /* replsets use RSOpTime.
        M/S uses OpTime.
@@ -88,10 +94,10 @@ namespace bson {
             has 5 bytes of overhead.
          */
         unsigned long long asDate() const {
-            return reinterpret_cast<const unsigned long long*>(&i)[0];
+            return extract<unsigned long long>(reinterpret_cast<char const*>(&i));
         }
         long long asLL() const {
-            return reinterpret_cast<const long long*>(&i)[0];
+            return extract<long long>(reinterpret_cast<char const*>(&i));
         }
 
         bool isNull() const { return secs == 0; }

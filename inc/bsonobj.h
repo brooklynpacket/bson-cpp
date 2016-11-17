@@ -277,7 +277,7 @@ namespace bson {
         }
         /** @return total size of the BSON object in bytes */
         int objsize() const
-          { return *(reinterpret_cast<const int*>(objdata())); }
+          { return extract<int>(objdata()); }
 
         /** performs a cursory check on the object's size only. */
         bool isValid();
