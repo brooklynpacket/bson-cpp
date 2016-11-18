@@ -92,7 +92,7 @@ namespace bson {
         u |= ourMachineAndPid._machineNumber[0];
         u |= ourMachineAndPid._machineNumber[1] << 8;
         u |= ourMachineAndPid._machineNumber[2] << 16;
-        return { u };
+        return u;
     }
 
     void OID::justForked() {
