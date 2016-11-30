@@ -112,7 +112,7 @@ namespace bson {
     inline NOINLINE_DECL BSONObj BSONObj::copy() const {
         char * mem = (char*)malloc(objsize() + sizeof(unsigned));
         //Make reference count zero for h?
-        memcpy(mem, objdata(), objsize());
+        memcpy(mem + sizeof(unsigned), objdata(), objsize());
         return BSONObj(Holder(mem));
     }
 
