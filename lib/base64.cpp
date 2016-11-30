@@ -69,14 +69,14 @@ namespace base64 {
         return ss.str();
     }
 
-    std::string encode( const std::string& s ) {
-        return encode( s.c_str() , s.size() );
+    std::string encode(boost::string_view const &s) {
+        return encode( s.data() , s.size() );
     }
 
 
-    void decode( std::stringstream& ss , const std::string& s ) {
+    void decode( std::stringstream& ss , boost::string_view const &s ) {
         assert( s.size() % 4 == 0 );
-        const unsigned char * data = (const unsigned char*)s.c_str();
+        const unsigned char * data = (const unsigned char*)s.data();
         size_t const size = s.size();
 
         unsigned char buf[3];
@@ -100,7 +100,7 @@ namespace base64 {
         }
     }
 
-    std::string decode( const std::string& s ) {
+    std::string decode(boost::string_view const &s) {
         std::stringstream ss;
         decode( ss , s );
         return ss.str();

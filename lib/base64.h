@@ -62,10 +62,10 @@ namespace base64 {
 
     void encode( std::stringstream& ss , const char * data , size_t size );
     std::string encode( const char * data , size_t size );
-    std::string encode( const std::string& s );
+    std::string encode(boost::string_view const &s);
 
-    void decode( std::stringstream& ss , const std::string& s );
-    std::string decode( const std::string& s );
+    void decode(std::stringstream& ss , boost::string_view const &s);
+    std::string decode(boost::string_view const &s);
 
     void testAlphabet();
 }
