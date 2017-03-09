@@ -29,7 +29,9 @@ namespace Nonce {
     Security::Security() {
         static int n;
         //std::cout << n;
-        assert(++n == 1 && "Security is a singleton class");
+        if(++n != 1) {
+            assert(false && "Security is a singleton class");
+        }
         init();
     }
 
