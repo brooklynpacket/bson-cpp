@@ -141,6 +141,30 @@ namespace bson {
             return -1;
         return 0;
     }
+    
+#if _LIBCPP_STD_VER > 14
+    template<typename CharT>
+    static auto isControlCharacter(CharT &&ch) {
+        using Tp = std::decay_t<CharT>;
+        if constexpr (std::is_signed_v<Tp>) {
+            return ch >= 0 && ch <= 0x1f;
+        }
+        else if constexpr (std::is_unsigned_v<Tp>) {
+            return ch <= 0x1f;
+        }
+        return false;
+    }
+#else
+    template<typename CharT>
+    static std::enable_if_t<Bpc::std17::is_signed_v<std::decay_t<CharT>>,bool> isControlCharacter(CharT &&ch) {
+        return ch >= 0 && ch <= 0x1f;
+    }
+    
+    template<typename CharT>
+    static std::enable_if_t<Bpc::std17::is_unsigned_v<std::decay_t<CharT>>,bool> isControlCharacter(CharT &&ch) {
+        return ch <= 0x1f;
+    }
+#endif
 
     std::string escape( std::string s , bool escape_slash=false) {
         StringBuilder ret;
@@ -171,7 +195,7 @@ namespace bson {
                 ret << "\\t";
                 break;
             default:
-                if ( *i >= 0 && *i <= 0x1f ) {
+                if (isControlCharacter(*i)) {
                     //TODO: these should be utf16 code-units not bytes
                     char c = *i;
                     ret << "\\u00" << toHexLower(&c, 1);
